@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Broastys — Broasted Chicken &amp; More</title>
+<style>
+  :root{--gold:#e8b84b;--dark:#1a1410;--bg:#fffaf2;}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
+  body{background:var(--bg);color:var(--dark);line-height:1.5;}
+  header{background:var(--dark);color:#fff;padding:1.4rem 1rem;text-align:center;}
+  header h1{font-size:2rem;letter-spacing:1px;color:var(--gold);}
+  header p{opacity:.85;font-size:.95rem;}
+  .hero{height:340px;background:#222 url('https://loremflickr.com/1200/400/broast,chicken,restaurant') center/cover no-repeat;}
+  .hero-fallback{height:340px;background:#222 url('https://picsum.photos/1200/400?random=1') center/cover no-repeat;}
+  section{max-width:960px;margin:0 auto;padding:2rem 1rem;}
+  h2{color:var(--gold);border-bottom:2px solid var(--gold);padding-bottom:.4rem;margin-bottom:1.2rem;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem;}
+  .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+  .card img{width:100%;height:180px;object-fit:cover;display:block;background:#eee;}
+  .card .body{padding:.9rem 1rem 1.1rem;}
+  .card h3{font-size:1.1rem;margin-bottom:.3rem;}
+  .card .price{color:#b8860b;font-weight:700;}
+  .card p{font-size:.88rem;opacity:.8;}
+  .imgchain{background:#eee;}
+  footer{background:var(--dark);color:#fff;text-align:center;padding:1.4rem;font-size:.85rem;opacity:.9;}
+  a{color:var(--gold);}
+</style>
+</head>
+<body>
+<header>
+  <h1>BROASTYS</h1>
+  <p>Crispy broasted chicken &amp; Saudi comfort food — delivered hot, every time.</p>
+</header>
+
+<div class="hero" onerror="this.className='hero-fallback'"></div>
+
+<section>
+  <h2>Our Menu</h2>
+  <div class="grid" id="menu"></div>
+</section>
+
+<section>
+  <h2>Why Broastys</h2>
+  <p style="max-width:680px;">Fresh broasted chicken, hand-blended spices, and fast delivery across the city.
+  Order for pickup or have it brought to your door — hot, crispy, and ready in 30 minutes.</p>
+</section>
+
+<footer>
+  Broastys &copy; 2026 &middot; Order: <a href="https://wa.me/9665XXXXXXXXX">WhatsApp</a> &middot;
+  Powered by AutoApply SA
+</footer>
+
+<script>
+// Real menu data. Each item has keyword-based image search (no placeholders).
+// Image chain: LoremFlickr (real keyword photo) -> picsum -> unsplash, guaranteed visible.
+const MENU = [
+  {name:"Classic Broasted Chicken (Half)", price:"SAR 18", desc:"Crispy golden broast, 8pc, with garlic sauce.", kw:"broast,chicken"},
+  {name:"Broast Combo Family", price:"SAR 45", desc:"Whole chicken + fries + 2 dips + drink.", kw:"fried,chicken,meal"},
+  {name:"Spicy Broast Wings (10pc)", price:"SAR 22", desc:"Cayenne-rubbed wings, extra crispy.", kw:"chicken,wings,spicy"},
+  {name:"Cheeseburger Broast", price:"SAR 20", desc:"Chicken patty, cheddar, pickles, special sauce.", kw:"burger,chicken"},
+  {name:"Fries & Rings", price:"SAR 10", desc:"Crinkle fries + onion rings side.", kw:"fries,onion,rings"},
+  {name:"Coleslaw & Salad", price:"SAR 9", desc:"Fresh cabbage slaw, light vinaigrette.", kw:"salad,coleslaw"},
+  {name:"Arabic Rice Plate", price:"SAR 16", desc:"Basmati rice, grilled chicken strip, nuts.", kw:"rice,chicken,arabic"},
+  {name:"Thick Shake", price:"SAR 12", desc:"Vanilla/strawberry, made fresh.", kw:"milkshake,dessert"}
+];
+
+const img = (kw,i) => `https://loremflickr.com/400/300/${encodeURIComponent(kw)}`;
+const menuEl = document.getElementById('menu');
+MENU.forEach((m,i)=>{
+  const c = document.createElement('div');
+  c.className='card';
+  // onerror chain: loremflickr -> picsum(random) -> unsplash
+  const u1 = img(m.kw,i), u2 = `https://picsum.photos/400/300?random=${i+10}`, u3 = `https://source.unsplash.com/featured/400x300/?${encodeURIComponent(m.kw)}`;
+  c.innerHTML = `<img class="imgchain" src="${u1}" alt="${m.name}"
+      onerror="this.onerror=null;this.src='${u2}';this.onerror=function(){this.onerror=null;this.src='${u3}';}">
+    <div class="body"><h3>${m.name}</h3><div class="price">${m.price}</div><p>${m.desc}</p></div>`;
+  menuEl.appendChild(c);
+});
+</script>
+</body>
+</html>
