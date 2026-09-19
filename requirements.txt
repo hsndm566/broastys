@@ -1,0 +1,1 @@
+# No third-party Python dependencies; assets are synced with the standard library.
